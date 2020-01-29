@@ -65,11 +65,16 @@ const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true }
               latitude: position.coords.latitude,
               longitude: position.coords.longitude
           }, () => {
-              console.log('Location shared!')
+              
               $sendLocationButton.removeAttribute('disabled')
-            
+              console.log('Location shared!')
           })
       })
   })
 
-  socket.emit('join', { username, room })
+  socket.emit('join', { username, room }, (error) => {
+    if (error) {
+        alert(error)
+        location.href = '/'
+    }
+  })
