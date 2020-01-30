@@ -21,7 +21,7 @@ app.use(express.static(publicDirectoryPath))
 
 io.on('connection', (socket) => {
     console.log('New WebSocket connection')
-
+    // Joins user to chat room with welcome from admin
     socket.on('join', (options, callback) => {
         const { error, user } = addUser({ id: socket.id, ...options })
 
@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
         io.to(user.room).emit('locationMessage', generateLocationMessage(user.username, `https://google.com/maps?q=${coords.latitude},${coords.longitude}`))
         callback()
     })
-
+    // disconnects and removes user from chat room
     socket.on('disconnect', () => {
         const user = removeUser(socket.id)
 

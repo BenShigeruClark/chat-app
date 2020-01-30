@@ -35,6 +35,7 @@ const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true }
       $messages.insertAdjacentHTML('beforeend', html)
   })
 
+  // Renders users list to sidebar
   socket.on('roomData', ({ room, users }) => {
       const html = Mustache.render(sidebarTemplate, {
           room,
@@ -43,6 +44,7 @@ const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true }
       document.querySelector('#sidebar').innerHTML = html
   })
 
+  // Removes user from sidebar list
   $messageForm.addEventListener('submit', (e) => {
       e.preventDefault()
 
