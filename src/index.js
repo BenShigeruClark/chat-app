@@ -37,19 +37,23 @@ io.on('connection', (socket) => {
         callback()
     })
 
+    // get user message and send to other users in same chat room
     socket.on('sendMessage', (message, callback) => {
-          const filter = new Filter()
+        const user = getUser(socket.id)
+        const filter = new Filter()
 
-          if (filter.isProfane(message)) {
-              return callback('Profanity is not allowed!')
-          }
+        if (filter.isProfane(message)) {
+            return callback('Profanity is not allowed!')
+        }
 
-          io.to('Irvine').emit('message', generateMessage(message))
-          callback()
+        io.to(user.room).emit('message', generateMessage(message))
+        callback()
     })
 
+    // get user location and send to other users in same chat room
     socket.on('sendLocation', (coords, callback) => {
-        io.emit('locationMessage', generateLocationMessage(`https://google.com/maps?q=${coords.latitude},${coords.longitude}`))
+        const user = getUser(socket.id)
+        io.to(user.room).emit('locationMessage', generateLocationMessage(`https://google.com/maps?q=${coords.latitude},${coords.longitude}`))
         callback()
     })
 
